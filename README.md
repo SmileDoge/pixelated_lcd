@@ -8,5 +8,5 @@ See usage [there.](USAGE.md)
 
 ## Preview
 
-![Gmod logo](./github/pics/gmod_icFolnwstj.jpg)
-![Tun sahur](./github/pics/gmod_Qyj9EeaSze.jpg)
+![Gmod logo](./.github/pics/gmod_icFolnwstj.jpg)
+![Tun sahur](./.github/pics/gmod_Qyj9EeaSze.jpg)

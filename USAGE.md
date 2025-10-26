@@ -27,9 +27,9 @@ See `lua/pixelated_examples` folder.
 
 
 
-![Square](./github/pics/layout_square.jpg)
-![Offset Square](./github/pics/layout_offset_square.jpg)
-![Arrow](./github/pics/layout_arrow.jpg)
+![Square](./.github/pics/layout_square.jpg)
+![Offset Square](./.github/pics/layout_offset_square.jpg)
+![Arrow](./.github/pics/layout_arrow.jpg)
 
 
 ### Functions
