@@ -2,6 +2,9 @@
 
 ## Usage
 
+> [!CAUTION]
+> You should avoid drawing two planes in the same position, as this may cause artifacts with the depth buffer.
+
 ### Examples
 
 See `lua/pixelated_examples` folder.
@@ -36,11 +39,11 @@ See `lua/pixelated_examples` folder.
 #### Pixelated.SetSettings
 
 ```lua
--- cull : boolean
--- depthTest : boolean
--- writeDepth : boolean
+-- cull              : boolean
+-- depthTest         : boolean
+-- writeDepth        : boolean
 -- linearBaseTexture : boolean
--- linearPixelMask : boolean
+-- linearPixelMask   : boolean
 function Pixelated.SetSettings(cull, depthTest, writeDepth, linearBaseTexture, linearPixelMask)
 ```
 
@@ -62,7 +65,7 @@ Sets sub-pixel brightness. Recommended values from 1 to 4.
 #### Pixelated.SetPixelLayout
 
 ```lua
--- typ : Pixelated.LAYOUT_*
+-- typ    : Pixelated.LAYOUT_*
 -- offset : number
 function Pixelated.SetPixelLayout(typ, offset)
 ```
@@ -74,9 +77,9 @@ Sets sub-pixel layout. [Check up the enums](#enums)
 #### Pixelated.SetPixelMask
 
 ```lua
--- texture: ITexture | string
--- width : number = texture:Width() or 64 if texture is string
--- height : number = texture:Height() or 64 if texture is string
+-- texture : ITexture | string
+-- width   : number = texture:Width() or 64 if texture is string
+-- height  : number = texture:Height() or 64 if texture is string
 function Pixelated.SetPixelMask(texture, width, height)
 ```
 
@@ -100,9 +103,9 @@ Restores original sub-pixel mask and their width with height.
 #### Pixelated.SetBaseTexture
 
 ```lua
--- texture: ITexture | string
--- width : number = texture:Width() or 512 if texture is string
--- height : number = texture:Height() or 512 if texture is string
+-- texture : ITexture | string
+-- width   : number = texture:Width() or 512 if texture is string
+-- height  : number = texture:Height() or 512 if texture is string
 function Pixelated.SetBaseTexture(texture, width, height)
 ```
 
@@ -113,10 +116,14 @@ Sets the base texture.
 #### Pixelated.StartDraw
 
 ```lua
-function Pixelated.StartDraw()
+-- depthEnable : boolean? = true
+function Pixelated.StartDraw(depthEnable)
 ```
 
 Start the drawing shader, setup rendering context.
+
+`depthEnable` can usually be set to false if you already have a surface on which the shader is drawn.
+See [pixelated_mediascreen.lua](./lua/pixelated_examples/pixelated_mediascreen.lua)
 
 ---
 
@@ -133,9 +140,100 @@ End the drawing. restores rendering context
 #### Pixelated.DrawWithFunc
 
 ```lua
--- func: function
--- useDepthPass: boolean? or function?
+-- func         : function
+-- useDepthPass : boolean? or function?
+-- depthEnable  : boolean?
 function Pixelated.DrawWithFunc(func, useDepthPass)
 ```
 
 Combines StartDraw and EndDraw, and also writes (if true or a function is passed to `useDepthPass`) to the [depth buffer](https://wiki.facepunch.com/gmod/render.GetResolvedFullFrameDepth).
+Passes `depthEnable` to [Pixelated.StartDraw](#pixelatedstartdraw).
+
+### Usefull Functions
+
+#### Pixelated.Start3D2D
+
+```lua
+-- pos   : vector
+-- ang   : angle
+-- scale : number
+function Pixelated.Start3D2D(pos, ang, scale)
+```
+
+Does the same thing as cam.Start3D2D, but for the Pixelated functions.
+
+---
+
+#### Pixelated.End3D2D
+
+```lua
+function Pixelated.End3D2D()
+```
+
+Does the same thing as cam.End3D2D, but for the Pixelated functions.
+
+---
+
+#### Pixelated.SetDrawColor
+
+```lua
+-- r : Color? or number? = 255
+-- g : number? = 255
+-- b : number? = 255
+-- a : number? = 255
+function Pixelated.SetDrawColor(r, g, b, a)
+```
+
+Sets the drawing color, for DrawRect, DrawTexturedRect and DrawTexturedRectUV.
+
+---
+
+#### Pixelated.DrawRect
+
+```lua
+-- x : number
+-- y : number
+-- w : number
+-- h : number
+function Pixelated.DrawRect(x, y, w, h)
+```
+
+Draws a rectangle, but with vgui/white! Used for debugging Pixelated.Start3D2D.
+
+---
+
+#### Pixelated.DrawTexturedRect
+
+```lua
+-- x : number
+-- y : number
+-- w : number
+-- h : number
+function Pixelated.DrawTexturedRect(x, y, w, h)
+```
+
+Draws a rectangle with shader
+
+---
+
+#### Pixelated.DrawTexturedRectUV
+
+
+```lua
+-- x      : number
+-- y      : number
+-- w      : number
+-- h      : number
+-- startU : number? = 0
+-- startV : number? = 0
+-- endU   : number? = 1
+-- endV   : number? = 1
+function Pixelated.DrawTexturedRect(x, y, w, h, startU, startV, endU, endV)
+```
+
+Draws a rectangle with shader and with custom UV.
+Internally use mesh builder.
+
+---
+
+meow.
